@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>SKZ CHAOS ASSISTANT :: interactive GIFs</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: radial-gradient(circle at 10% 20%, #1a0b1f, #05030a);
+            font-family: 'Segoe UI', 'Quicksand', system-ui, 'Inter', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 20%;
+            left: -10%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, #ff69b440, transparent);
+            border-radius: 50%;
+            filter: blur(60px);
+            animation: floatOrb 20s infinite alternate;
+            pointer-events: none;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            bottom: 10%;
+            right: -5%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, #ffb34730, transparent);
+            border-radius: 50%;
+            filter: blur(80px);
+            animation: floatOrb 25s infinite alternate-reverse;
+            pointer-events: none;
+        }
+
+        @keyframes floatOrb {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(40px, 30px) scale(1.2); }
+        }
+
+        .chaos-panel {
+            max-width: 760px;
+            width: 100%;
+            background: rgba(10, 6, 20, 0.65);
+            backdrop-filter: blur(16px);
+            border-radius: 3rem;
+            border: 1px solid rgba(255, 200, 100, 0.3);
+            box-shadow: 0 30px 50px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,215,0,0.1) inset;
+            overflow: hidden;
+            transition: transform 0.2s ease;
+        }
+
+        .chaos-panel:hover {
+            transform: translateY(-3px);
+        }
+
+        .visual-hero {
+            width: 100%;
+            height: 170px;
+            background-image: url('https://i.pinimg.com/1200x/f0/12/60/f0126094e1eae77c835936d87c680ff8.jpg');
+            background-size: cover;
+            background-position: center 40%;
+            position: relative;
+        }
+
+        .visual-hero::after {
+            content: "✨ click the GIFs for motivation ✨";
+            position: absolute;
+            bottom: 12px;
+            right: 16px;
+            font-size: 0.65rem;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(4px);
+            padding: 4px 12px;
+            border-radius: 40px;
+            color: #ffffff;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        .skz-header {
+            padding: 1.2rem 1.8rem 0.6rem;
+        }
+
+        .skz-header h1 {
+            font-size: 1.9rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #FFE6B0, #FFB347, #FF8C94, #DDA0DD);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: gradientShift 5s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .sub {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 8px;
+            color: #e0d4ff;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .member-visual {
+            background: rgba(20, 14, 40, 0.7);
+            backdrop-filter: blur(8px);
+            margin: 0.8rem 1.5rem;
+            border-radius: 32px;
+            padding: 12px 18px;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            border: 1px solid rgba(255, 200, 100, 0.4);
+        }
+
+        .member-avatar {
+            width: 55px;
+            height: 55px;
+            border-radius: 100%;
+            background-image: url('https://i.pinimg.com/736x/ff/60/da/ff60da26769fede895020e78beaba4ed.jpg');
+            background-size: cover;
+            background-position: center;
+            border: 2px solid #ffcb7e;
+        }
+
+        .member-quote-box {
+            flex: 1;
+            font-size: 0.85rem;
+            color: #ffffff;
+        }
+
+        .member-quote-box span {
+            color: #ffdd99;
+            font-weight: 600;
+        }
+
+        .task-input-area {
+            padding: 0.8rem 1.5rem;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .task-input-area input {
+            flex: 1;
+            background: rgba(35, 25, 55, 0.9);
+            border: 1px solid #5e4a7a;
+            padding: 14px 18px;
+            border-radius: 60px;
+            font-size: 0.9rem;
+            color: #ffffff;
+            outline: none;
+        }
+
+        .task-input-area input::placeholder {
+            color: #b8a8e0;
+        }
+
+        .task-input-area input:focus {
+            border-color: #ffb347;
+            box-shadow: 0 0 15px rgba(255,180,70,0.4);
+        }
+
+        button {
+            background: linear-gradient(135deg, #3f2a60, #2a1a45);
+            border: none;
+            padding: 0 22px;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: #ffffff;
+            cursor: pointer;
+            transition: all 0.1s ease;
+        }
+
+        button:active { transform: scale(0.94); }
+
+        .chaos-actions {
+            padding: 0rem 1.5rem 0.8rem;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .chaos-btn {
+            background: #231b39;
+            font-size: 0.7rem;
+            padding: 6px 14px;
+            color: #f0e6ff;
+        }
+
+        .procrastinate-btn {
+            background: linear-gradient(145deg, #6b2e6e, #3d1e4a);
+            color: #fff0d0;
+        }
+
+        /* INTERACTIVE GIF STRIP */
+        .gif-strip {
+            margin: 0.3rem 1.5rem;
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .gif-card {
+            flex: 1;
+            min-width: 100px;
+            background: rgba(15, 10, 30, 0.7);
+            border-radius: 28px;
+            padding: 12px 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid #ffcd7e55;
+        }
+
+        .gif-card:hover {
+            transform: translateY(-6px);
+            background: rgba(40, 25, 65, 0.9);
+            border-color: #ffb347;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+        }
+
+        .gif-thumb {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            background-size: cover;
+            background-position: center;
+            border-radius: 20px;
+            margin-bottom: 8px;
+            transition: all 0.1s;
+        }
+
+        .gif-label {
+            font-size: 0.7rem;
+            color: #ffffff;
+            font-weight: 600;
+            margin-top: 6px;
+            letter-spacing: 0.3px;
+        }
+
+        .gif-card:active .gif-thumb {
+            transform: scale(0.97);
+        }
+
+        .tasks-container {
+            padding: 0.5rem 1.5rem 1rem;
+            max-height: 280px;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: #ffb347 #2a1f44;
+        }
+
+        .task-item {
+            background: rgba(25, 18, 45, 0.8);
+            backdrop-filter: blur(4px);
+            margin-bottom: 10px;
+            border-radius: 50px;
+            padding: 6px 12px 6px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            border-left: 6px solid;
+            transition: 0.1s;
+        }
+
+        .task-item:hover {
+            background: rgba(45, 32, 70, 0.9);
+            transform: translateX(4px);
+        }
+
+        .task-text {
+            color: #ffffff;
+            font-size: 0.85rem;
+            flex: 1;
+            font-weight: 500;
+        }
+
+        .task-badge {
+            font-size: 0.6rem;
+            background: #2a1a39;
+            padding: 3px 8px;
+            border-radius: 30px;
+            color: #ffefcf;
+            font-weight: 600;
+        }
+
+        .task-actions {
+            display: flex;
+            gap: 5px;
+        }
+
+        .task-btn {
+            background: none;
+            padding: 4px 10px;
+            font-size: 0.65rem;
+            color: #e0d0ff;
+            font-weight: 600;
+        }
+
+        .task-btn.done { background: #3f6742; color: white; }
+        .task-btn.later { background: #2a253b; color: #ddd0ff; }
+        .task-btn.ghost { background: #331f42; color: #ffc9b0; }
+
+        .empty-message {
+            text-align: center;
+            padding: 1.5rem;
+            color: #cbbdff;
+            font-weight: 500;
+        }
+
+        .member-message {
+            background: rgba(15, 8, 30, 0.8);
+            backdrop-filter: blur(12px);
+            margin: 0.5rem 1.5rem 1.2rem;
+            border-radius: 32px;
+            padding: 14px 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            border-left: 5px solid #f7b05e;
+        }
+
+        .quote-icon {
+            font-size: 1.8rem;
+        }
+
+        #messageText {
+            color: #ffffff;
+            font-weight: 500;
+            flex: 1;
+            font-size: 0.85rem;
+        }
+
+        .soundwave {
+            display: flex;
+            gap: 3px;
+            align-items: center;
+            height: 35px;
+        }
+        .soundwave span {
+            width: 3px;
+            background: #f7b05e;
+            border-radius: 4px;
+            animation: wave 1.2s infinite alternate;
+        }
+        .soundwave span:nth-child(1) { height: 20px; animation-delay: 0s; }
+        .soundwave span:nth-child(2) { height: 30px; animation-delay: 0.2s; }
+        .soundwave span:nth-child(3) { height: 40px; animation-delay: 0.4s; }
+        .soundwave span:nth-child(4) { height: 25px; animation-delay: 0.1s; }
+        .soundwave span:nth-child(5) { height: 35px; animation-delay: 0.6s; }
+
+        @keyframes wave {
+            0% { height: 8px; opacity: 0.4; }
+            100% { height: 100%; opacity: 1; }
+        }
+
+        footer {
+            font-size: 0.6rem;
+            text-align: center;
+            padding: 1rem;
+            color: #c0addb;
+            font-weight: 500;
+            border-top: 1px solid #2a1e44;
+        }
+    </style>
+</head>
+<body>
+
+<div class="chaos-panel">
+    <div class="visual-hero"></div>
+
+    <div class="skz-header">
+        <h1>✧ SKZ CHAOS ASSISTANT ✧</h1>
+        <div class="sub">
+            <span>🐾 anti‑to‑do list · adhd friendly</span>
+            <span id="randomMemberTag">🖤 click GIFs for help</span>
+        </div>
+    </div>
+
+    <div class="member-visual">
+        <div class="member-avatar"></div>
+        <div class="member-quote-box" id="memberQuoteBox">
+            <span>🐣 today's skz mood</span><br>
+            “You're doing enough, Stay. really.”
+        </div>
+    </div>
+
+    <div class="task-input-area">
+        <input type="text" id="taskInput" placeholder="brain dump... like 'reply to text' or 'write paper'" autocomplete="off">
+        <button id="addTaskBtn">➕ ADD TASK</button>
+    </div>
+
+    <div class="chaos-actions">
+        <button id="wipeCompletedBtn" class="chaos-btn">✨ remove finished</button>
+        <button id="clearAllBtn" class="chaos-btn">🌀 fresh start</button>
+        <button id="procrastinateBtn" class="chaos-btn procrastinate-btn">😮‍💨 I'M NOT DOING ANY OF THIS</button>
+    </div>
+
+    <!-- INTERACTIVE GIF STRIP -->
+    <div class="gif-strip" id="gifStrip">
+        <div class="gif-card" id="gifCard1">
+            <div class="gif-thumb" id="gif1"></div>
+            <div class="gif-label">💬 QUOTE DROP</div>
+        </div>
+        <div class="gif-card" id="gifCard2">
+            <div class="gif-thumb" id="gif2"></div>
+            <div class="gif-label">⚡ 5s ACTION</div>
+        </div>
+        <div class="gif-card" id="gifCard3">
+            <div class="gif-thumb" id="gif3"></div>
+            <div class="gif-label">🎯 PICK A TASK</div>
+        </div>
+    </div>
+
+    <div class="tasks-container" id="tasksList">
+        <div class="empty-message">🌸 no floating tasks... yet.<br> add something or click a GIF for motivation ✨</div>
+    </div>
+
+    <div class="member-message">
+        <div class="quote-icon">🎤</div>
+        <div id="messageText">click a GIF → motivation appears ↓</div>
+        <div class="soundwave"><span></span><span></span><span></span><span></span><span></span></div>
+    </div>
+    
+    <footer>
+        🎧 GIFs give you boosts · no pressure, just chaos · Katie made this for you 💾
+    </footer>
+</div>
+
+<script>
+    // ============ GIF ROTATION LIBRARY ============
+    const GIF_POOLS = {
+        slot1: [
+            "https://media1.tenor.com/m/6ru8eQUVb8MAAAAd/fozeight.gif",
+            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYzU3MXN5OG5ldzYzYmcyMGdibXdyaXZzOWdsY2k3bG1oNXNncHg1bSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/uxR7KaKQEQANmQZTju/giphy.gif",
+            "https://i.pinimg.com/originals/28/b1/90/28b1900a1e41ae09aa957e4621e2c478.gif",
+            "https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3aThzbTNzN2htbnUycmNoMDIwMGNjMGR1YTBpbmVqNnlvcDI2NWhvbSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/8R06xajJyO0ctXiZeK/giphy.gif",
+            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYzU3MXN5OG5ldzYzYmcyMGdibXdyaXZzOWdsY2k3bG1oNXNncHg1bSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/rrs0KLDDkNFnGGv3MD/giphy.gif",
+            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHhzZTc2cDZjMmRxdDdjN3ZkdXBmNGZ2azhqYXRzMHk4azhtd2YwbiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/5TTqaouEb6B8OgVQ64/giphy.gif",
+            "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExeTh6OTVhYzNjYnh4eXJvd2hleTdnendsMTg3eHozbDFhaXY1YzgwbCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/O8ypvdYJ6YvsWgaCzw/giphy.gif",
+            "https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExcmVqcDgxNzdqZzV4MGZocGN0c3M0Mnk0ZXc4dGxibWpheGVzdjBwbSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/ZvTXCZcZPK0YQPsYMX/giphy.gif",
+            "https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExMnVpaGg1bG54dHVueTNmaHR3ZjhkMnE1aXlqZHpkdjFoMGJyc2xxNSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/661NQ5NL0PoR3pbpQy/giphy.gif",
+            "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExeGJtMzV0NWdmcjBia202NWV3cGFtNHlmNmxwZW1qemJuMGJsYno2ZCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/LH54karj7Dd1jxGbmI/giphy.gif",
+            "https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExeXA3azF2Mms5Z2QxNWxwZXR6ZzNyeHA3bmM1cmxhcmc5Ymx4dzE4NSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/dsyx8gSBDp5wW5dMir/giphy.gif"
+        ],
+        slot2: [
+            "https://i.pinimg.com/originals/1a/75/6d/1a756d36256c47d3a1e51b13f8a48191.gif",
+            "https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3MTN6OWk4ZjFiZjg1NGdsd2lyZG5xbnpveHZ0eHloNGFqdmhramdrZCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/TZ4xOnEQyaLJK4CCWR/giphy.gif",
+            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYzU3MXN5OG5ldzYzYmcyMGdibXdyaXZzOWdsY2k3bG1oNXNncHg1bSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/tlh7w8LMfcR5L8gked/giphy.gif",
+            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYzU3MXN5OG5ldzYzYmcyMGdibXdyaXZzOWdsY2k3bG1oNXNncHg1bSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/KBIqsD2nIxuZ6BD5ua/giphy.gif",
+            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYndpc3RmZjlhbjR3ZXI1dGVrbDhzZGs4YmIwYWEycTJueWNmeGsxbSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/S6YiBGHGGrEBEJ51At/giphy.gif",
+            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHhzZTc2cDZjMmRxdDdjN3ZkdXBmNGZ2azhqYXRzMHk4azhtd2YwbiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/bIBzHOsJP9egje1v1k/giphy.gif",
+            "https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3c3ZnaGg0dGZ3Zzd3ZG40NGFjZzF3dTZ6NnFueTA1M2M3b3gzZDlneSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/sABJZe4NZVhBQ2OPWG/giphy.gif",
+            "https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3czODk4eTJscnEzNXZyOGJtemwwOG82M2U4NHFhbndoZ3I0bDVucSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/gYk8oYKDDEMWi75os4/giphy.gif",
+            "https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExY21rbTI5bzgzN3F2M3h2ZXIxdDJlZWc0eWE2YW02MjZ1NnEycjU1dCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/1phpil552RPJkc3aH7/giphy.gif",
+            "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExZjQ3bWtqNmJoa3F3YmNwdDJhaTNzdmZ5MjNmdzg0eHBuN253dHpyNCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/PdNrLzoXFahVSsP0pI/giphy.gif",
+            "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExNnA4YWVmaWJnNW12bWE4eHRneTk5Ymk2aHBuY3ZremU2NmJlYXVmYyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/YtaOAeeQI6komihhFF/giphy.gif"
+        ],
+        slot3: [
+            "https://media1.tenor.com/m/p6sB9TIeWlYAAAAC/musediet-jilix.gif",
+            "https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3dWx6bjJsZWNzMTd5bGZxcGFjMXhlY2c4bHBlejFsbmVkZDB1dXBrciZlcD12MV9naWZzX3NlYXJjaCZjdD1n/Kjh61wftTbbVYcWbpq/giphy.gif",
+            "https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3MXlsbmpiOWd3enRtczVsNjJtajhubjIxam5vYWY1bWx3dnB1djN6NSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/8go3TT4bkp5QMmmMWp/giphy.gif",
+            "https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3MXlsbmpiOWd3enRtczVsNjJtajhubjIxam5vYWY1bWx3dnB1djN6NSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/8OVC2cApv2P44V2QA0/giphy.gif",
+            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYndpc3RmZjlhbjR3ZXI1dGVrbDhzZGs4YmIwYWEycTJueWNmeGsxbSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/hSixbibkgVZ6156zrc/giphy.gif",
+            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHhzZTc2cDZjMmRxdDdjN3ZkdXBmNGZ2azhqYXRzMHk4azhtd2YwbiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/AFAnJIDauW4DGOTQ8k/giphy.gif",
+            "https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3ZTQ2NTh0MTR6bHV1em8zOWNtdGxic3lldGxvZG5mcHY0eGt3cTNuNCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/Bbx73XqwDGe28CLNrg/giphy.gif",
+            "https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExN241aXYyNGl0bHQwanlmbWlieDVlMjYyY3I2c2M1cWdjMmM3cWs1NSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/zyowVRaOa2SMowimbi/giphy.gif",
+            "https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExeWNhZHRhZzN3NG9hZmpuNmhwN2o0MzY4eDg2M2RrNW9meGQ2eWZ2MyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/NB5w3wuBcgPdc0eu3q/giphy.gif",
+            "https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExZWh0emdyamI5b3Fyb3Y3d2g2Ym9jeWQwOTd3Z3MxM2x3NGRuYndmYiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/qn310IGAU8PMLrowGg/giphy.gif",
+            "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExYWw1Y283NmxzZjh2YzViNGU1NzFhcGt0bmFlY3YzcnczYTVrYWNidyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/sXWcORhAbAW7H4nqZA/giphy.gif"
+        ]
+    };
+
+    let gifIndexes = { slot1: 0, slot2: 0, slot3: 0 };
+
+    function rotateGif(slot) {
+        const pool = GIF_POOLS[slot];
+        if (!pool) return;
+        gifIndexes[slot] = (gifIndexes[slot] + 1) % pool.length;
+        const newUrl = pool[gifIndexes[slot]];
+        const gifElement = document.getElementById(slot === 'slot1' ? 'gif1' : (slot === 'slot2' ? 'gif2' : 'gif3'));
+        if (gifElement) gifElement.style.backgroundImage = `url('${newUrl}')`;
+    }
+
+    function setRandomGif(slot) {
+        const pool = GIF_POOLS[slot];
+        if (!pool) return;
+        const randomIndex = Math.floor(Math.random() * pool.length);
+        gifIndexes[slot] = randomIndex;
+        const newUrl = pool[randomIndex];
+        const gifElement = document.getElementById(slot === 'slot1' ? 'gif1' : (slot === 'slot2' ? 'gif2' : 'gif3'));
+        if (gifElement) gifElement.style.backgroundImage = `url('${newUrl}')`;
+    }
+
+    // ============ MOTIVATION ACTIONS ============
+    const QUOTES = [
+        "✨ 'The good result will come by itself, so don't worry, just do as you prepared! fighting.' — Chan",
+        "💪 'Put away your negativity, back off.' — Changbin",
+        "🌸 'You've been doing so well, i hope you pour everything so you won't have regrets! ' — Seungmin",
+        "🔥 'I will support you until the end and in the end, you will win, fighting.' — Han",
+        "💛 'The world doesn’t matter, you matter.' — Felix",
+        "🕯️ 'Let's all die naturally in a healthy way.' — Lee Know",
+        "🎨 'Good luck on exams! do well and be back!' — Hyunjin",
+        "🦊 'Good luck on exams! even if you guess, it's all correct~.' — I.N"
+    ];
+
+    const ACTIONS = [
+        "💧 DRINK WATER right now. seriously.",
+        "🧘 STRETCH your arms above your head for 5 seconds.",
+        "📢 YELL into a pillow (or whisper dramatically).",
+        "👀 LOOK AWAY from the screen for 10 seconds. blink five times.",
+        "💨 TAKE 3 DEEP BREATHS. in... out...",
+        "🦵 WIGGLE YOUR TOES. you're alive. good job.",
+        "📝 WRITE ONE WORD about how you feel. anywhere."
+    ];
+
+    let tasks = [];
+    const STORAGE_KEY = "SKZ_CHAOS_TASKS";
+
+    function getRandomPendingTask() {
+        const pendingTasks = tasks.filter(t => t.status !== "done");
+        if (pendingTasks.length === 0) return null;
+        return pendingTasks[Math.floor(Math.random() * pendingTasks.length)];
+    }
+
+    function showMotivationMessage(msg, isEmphasis = false) {
+        const msgDiv = document.getElementById("messageText");
+        if (msgDiv) {
+            msgDiv.innerHTML = msg;
+            msgDiv.style.fontWeight = isEmphasis ? "bold" : "normal";
+            setTimeout(() => {
+                if (msgDiv.innerHTML === msg) {
+                    msgDiv.innerHTML = "click a GIF → motivation appears ↓";
+                    msgDiv.style.fontWeight = "normal";
+                }
+            }, 5000);
+        }
+        const wave = document.querySelector('.soundwave');
+        if (wave) {
+            wave.style.transform = "scale(1.05)";
+            setTimeout(() => { wave.style.transform = "scale(1)"; }, 300);
+        }
+    }
+
+    function onGif1Click() {
+        const randomQuote = QUOTES[Math.floor(Math.random() * QUOTES.length)];
+        showMotivationMessage(`💬 ${randomQuote}`, true);
+        rotateGif('slot1');
+        const memberBox = document.getElementById("memberQuoteBox");
+        const originalHTML = memberBox.innerHTML;
+        memberBox.innerHTML = `<span>🐺 CHAN'S WORDS</span><br> “${randomQuote.substring(0, 150)}”`;
+        setTimeout(() => {
+            if (memberBox.innerHTML !== originalHTML) memberBox.innerHTML = originalHTML;
+        }, 4000);
+    }
+
+    function onGif2Click() {
+        const randomAction = ACTIONS[Math.floor(Math.random() * ACTIONS.length)];
+        showMotivationMessage(`⚡ ${randomAction}`, true);
+        rotateGif('slot2');
+        document.body.style.transition = "background 0.1s";
+        document.body.style.background = "radial-gradient(circle at 10% 20%, #2a1535, #0a0512)";
+        setTimeout(() => {
+            document.body.style.background = "";
+        }, 200);
+    }
+
+    function onGif3Click() {
+        const randomTask = getRandomPendingTask();
+        if (randomTask) {
+            showMotivationMessage(`🎯 Try this one? "${randomTask.text.substring(0, 150)}" — or don't. no pressure.`, true);
+        } else {
+            showMotivationMessage(`🎯 No pending tasks! Add one or just vibe. You're already winning.`, true);
+        }
+        rotateGif('slot3');
+    }
+
+    // ============ TASK LOGIC ============
+    const MEMBERS = [
+        { name: "Bang Chan", emoji: "🐺", color: "#d9af6e", compliment: "Bang Chan says: Like mate, stop procrastinating." },
+        { name: "Lee Know", emoji: "🐱", color: "#c0b9aa", compliment: "Lee Know says: if there is something to gain, fight and win." },
+        { name: "Changbin", emoji: "🐷🐰", color: "#b5814a", compliment: "Changbin says: You try it and judge for yourself. Don't let other people decide for you." },
+        { name: "Hyunjin", emoji: "🦚", color: "#e3b3c4", compliment: "Hyunjin says: It’s okay to cry. Crying doesn’t mean you’re weak. It’s natural and helps you heal." },
+        { name: "Han", emoji: "🐿️", color: "#e8c384", compliment: "Han says: the wall in front of you is a wall that will eventually break if you keep pushing against it and a wall you can overcome if you keep climbing." },
+        { name: "Felix", emoji: "🐣", color: "#efb87e", compliment: "Felix says: You’re not alone and we are all fighting together. Go at your own pace and we’ll rise to the top as one." },
+        { name: "Seungmin", emoji: "🐶", color: "#bda0c4", compliment: "Seungmin says: Don’t worry, Just keep your pace and time." },
+        { name: "I.N", emoji: "🦊", color: "#dcae7e", compliment: "I.N says: Everyone! You are all doing very well so don’t lose your own pace and I hope everyone can head towards (Their own goals) at their own pace." }
+    ];
+
+    function loadTasks() {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if (stored) { try { tasks = JSON.parse(stored); } catch(e) { tasks = []; } }
+        if (!tasks) tasks = [];
+    }
+    function saveTasks() { localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks)); }
+    function getRandomMember() { return MEMBERS[Math.floor(Math.random() * MEMBERS.length)]; }
+
+    function addTask(desc) {
+        if (!desc.trim()) return false;
+        const newTask = {
+            id: Date.now() + Math.random() * 10000,
+            text: desc.trim(),
+            status: "pending",
+            member: getRandomMember(),
+        };
+        tasks.unshift(newTask);
+        saveTasks();
+        renderTasks();
+        return true;
+    }
+
+    function completeTask(id) {
+        const idx = tasks.findIndex(t => t.id == id);
+        if (idx !== -1 && tasks[idx].status !== "done") {
+            tasks[idx].status = "done";
+            saveTasks();
+            renderTasks();
+            const randMem = MEMBERS[Math.floor(Math.random() * MEMBERS.length)];
+            showMotivationMessage(`${randMem.emoji} ${randMem.compliment} 🎧`, true);
+            const doneCount = tasks.filter(t => t.status === "done").length;
+            if (doneCount % 3 === 0 && doneCount > 0)
+                showMotivationMessage(`✨ BONUS: ${MEMBERS[Math.floor(Math.random()*MEMBERS.length)].emoji} "${doneCount} tasks DONE? you're on fire!"`, true);
+        }
+    }
+
+    function notYetTask(id) {
+        const idx = tasks.findIndex(t => t.id == id);
+        if (idx !== -1 && tasks[idx].status !== "done") {
+            tasks[idx].status = tasks[idx].status === "later" ? "pending" : "later";
+            saveTasks();
+            renderTasks();
+            showMotivationMessage(tasks[idx].status === "later" ? "💤 task shrunk. waiting for you." : "⏳ task back to normal size!");
+        }
+    }
+
+    function vanishTask(id) {
+        const idx = tasks.findIndex(t => t.id == id);
+        if (idx !== -1) {
+            tasks.splice(idx, 1);
+            saveTasks();
+            renderTasks();
+            showMotivationMessage(`🕊️ task floated away. no shame.`, true);
+        }
+    }
+
+    function wipeCompleted() {
+        tasks = tasks.filter(t => t.status !== "done");
+        saveTasks();
+        renderTasks();
+        showMotivationMessage("🧹 finished tasks swept away! fresh air~");
+    }
+
+    function clearAllTasks() {
+        if (confirm("⚠️ erase ALL tasks? fresh start is valid too")) {
+            tasks = [];
+            saveTasks();
+            renderTasks();
+            showMotivationMessage("🌀 blank slate. add anything...or nothing.");
+        }
+    }
+
+    function procrastinate() {
+        const msgs = [
+            "✨ valid. Felix says: 'it's okay to rest.' no guilt.",
+            "🍿 take a breath. you're still a good person.",
+            "🌸 Seungmin humming. tasks can wait.",
+            "🐺 Chan: 'we worked hard today.' that includes you."
+        ];
+        showMotivationMessage(msgs[Math.floor(Math.random() * msgs.length)], true);
+    }
+
+    function renderTasks() {
+        const container = document.getElementById("tasksList");
+        if (!container) return;
+        if (tasks.length === 0) {
+            container.innerHTML = `<div class="empty-message">🌸 no floating tasks... yet.<br> add something or click a GIF for motivation ✨</div>`;
+            return;
+        }
+        let html = '';
+        for (let task of tasks) {
+            const isDone = task.status === "done";
+            const isLater = task.status === "later";
+            let borderColor = task.member.color;
+            let badge = !isDone && !isLater ? `<span class="task-badge">${task.member.emoji} ${task.member.name}</span>` : 
+                        (isDone ? `<span class="task-badge">✓ DONE</span>` : `<span class="task-badge">💤 LATER</span>`);
+            let style = isDone ? "opacity:0.65; text-decoration:line-through;" : (isLater ? "opacity:0.85;" : "");
+            html += `<div class="task-item" style="border-left-color: ${borderColor}; ${style}">
+                        <div class="task-text">${escapeHtml(task.text)}</div>
+                        <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap;">
+                            ${badge}
+                            <div class="task-actions">
+                                <button class="task-btn done" data-action="done" data-id="${task.id}">✔️ done</button>
+                                <button class="task-btn later" data-action="later" data-id="${task.id}">⏳ not yet</button>
+                                <button class="task-btn ghost" data-action="vanish" data-id="${task.id}">🫧 vanish</button>
+                            </div>
+                        </div>
+                    </div>`;
+        }
+        container.innerHTML = html;
+        document.querySelectorAll('.task-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const action = btn.getAttribute('data-action');
+                const id = parseFloat(btn.getAttribute('data-id'));
+                if (action === 'done') completeTask(id);
+                else if (action === 'later') notYetTask(id);
+                else if (action === 'vanish') vanishTask(id);
+            });
+        });
+        const randTag = MEMBERS[Math.floor(Math.random() * MEMBERS.length)];
+        document.getElementById("randomMemberTag").innerHTML = `${randTag.emoji} ${randTag.name}'s energy`;
+    }
+
+    function escapeHtml(str) { return str.replace(/[&<>]/g, function(m) { if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        setRandomGif('slot1');
+        setRandomGif('slot2');
+        setRandomGif('slot3');
+        
+        loadTasks();
+        renderTasks();
+        
+        document.getElementById("addTaskBtn").addEventListener("click", () => {
+            const inp = document.getElementById("taskInput");
+            if (inp.value.trim()) { addTask(inp.value); inp.value = ""; }
+        });
+        document.getElementById("taskInput").addEventListener("keypress", (e) => { if(e.key === "Enter") document.getElementById("addTaskBtn").click(); });
+        document.getElementById("wipeCompletedBtn").addEventListener("click", wipeCompleted);
+        document.getElementById("clearAllBtn").addEventListener("click", clearAllTasks);
+        document.getElementById("procrastinateBtn").addEventListener("click", procrastinate);
+        
+        document.getElementById("gifCard1").addEventListener("click", onGif1Click);
+        document.getElementById("gifCard2").addEventListener("click", onGif2Click);
+        document.getElementById("gifCard3").addEventListener("click", onGif3Click);
+        
+        setInterval(() => {
+            const randomMember = MEMBERS[Math.floor(Math.random() * MEMBERS.length)];
+            document.getElementById("memberQuoteBox").innerHTML = `<span>${randomMember.emoji} ${randomMember.name} whispers</span><br> “${randomMember.compliment.substring(0, 150)}”`;
+            setTimeout(() => {
+                if (document.getElementById("memberQuoteBox").innerHTML.includes(randomMember.compliment.substring(0, 150)))
+                    document.getElementById("memberQuoteBox").innerHTML = `<span>🐣 today's skz mood</span><br> “You're doing enough, Stay. really.”`;
+            }, 7000);
+        }, 30000);
+    });
+</script>
+
+<!-- FLOATING TIMER -->
+<div id="floatingTimer" style="position: fixed; bottom: 20px; right: 20px; width: 100px; height: 100px; background: rgba(0,0,0,0.8); backdrop-filter: blur(12px); border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 0 20px rgba(255,180,70,0.4); border: 1px solid #ffb347; z-index: 9999; cursor: pointer; font-family: monospace; transition: all 0.2s;">
+    <div id="timerDisplay" style="font-size: 28px; font-weight: bold; color: #ffdd99;">00:00</div>
+    <div style="font-size: 9px; color: #aaa; margin-top: 4px;">click to set</div>
+</div>
+
+<script>
+    (function() {
+        let timerInterval = null;
+        let secondsLeft = 0;
+        let isRunning = false;
+        const timerDiv = document.getElementById('floatingTimer');
+        const display = document.getElementById('timerDisplay');
+
+        function updateDisplay() {
+            const mins = Math.floor(secondsLeft / 60);
+            const secs = secondsLeft % 60;
+            display.textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        function stopTimer() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+            isRunning = false;
+            timerDiv.style.opacity = '1';
+        }
+
+        function startTimer(seconds) {
+            stopTimer();
+            secondsLeft = seconds;
+            updateDisplay();
+            isRunning = true;
+            timerDiv.style.opacity = '1';
+            
+            timerInterval = setInterval(() => {
+                if (secondsLeft <= 1) {
+                    // time's up
+                    stopTimer();
+                    updateDisplay();
+                    // gentle beep (optional — some browsers block autoplay)
+                    try {
+                        const beep = new Audio('data:audio/wav;base64,U3RlYWx0aCBzb3VuZA==');
+                        beep.play().catch(e => console.log('beep blocked'));
+                    } catch(e) {}
+                    // flash effect
+                    timerDiv.style.backgroundColor = 'rgba(255,100,100,0.6)';
+                    setTimeout(() => { timerDiv.style.backgroundColor = ''; }, 800);
+                    display.textContent = '✅';
+                    setTimeout(() => {
+                        if (!isRunning) display.textContent = '00:00';
+                    }, 2000);
+                } else {
+                    secondsLeft--;
+                    updateDisplay();
+                }
+            }, 1000);
+        }
+
+        function showTimePicker() {
+            const preset = prompt('Set minutes:\n1 | 5 | 10 | 15 | 25\n\nOr type any number (minutes)', '5');
+            if (preset === null) return;
+            let minutes = parseInt(preset);
+            if (isNaN(minutes)) return;
+            if (minutes <= 0) minutes = 1;
+            if (minutes > 120) minutes = 120;
+            startTimer(minutes * 60);
+        }
+
+        timerDiv.addEventListener('click', showTimePicker);
+        
+        // hover effect
+        timerDiv.addEventListener('mouseenter', () => {
+            timerDiv.style.transform = 'scale(1.05)';
+            timerDiv.style.boxShadow = '0 0 25px rgba(255,200,100,0.7)';
+        });
+        timerDiv.addEventListener('mouseleave', () => {
+            timerDiv.style.transform = 'scale(1)';
+            timerDiv.style.boxShadow = '0 0 20px rgba(255,180,70,0.4)';
+        });
+    })();
+</script>
+</body>
+</html>
